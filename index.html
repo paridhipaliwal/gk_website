@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gulabikari - Hand-Painted Footwear</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fafc;
+        }
+
+        .scroll-smooth {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body class="scroll-smooth">
+
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg fixed w-full z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-gray-800" data-page="home">Gulabikari</a>
+            <div class="flex items-center space-x-4">
+                <a href="#" class="text-gray-600 hover:text-gray-900 transition-colors duration-300" data-page="products">Products</a>
+                <a href="#" class="text-gray-600 hover:text-gray-900 transition-colors duration-300" data-page="about">About</a>
+                <a href="#" class="text-gray-600 hover:text-gray-900 transition-colors duration-300" data-page="contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container for pages -->
+    <div class="pt-16">
+        <!-- Hero Section (Page: home) -->
+        <section id="home-page" class="page bg-rose-50 py-32">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-5xl font-extrabold text-gray-800 leading-tight">
+                    Hand-Painted Art for Your Feet
+                </h1>
+                <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
+                    Discover our collection of unique, hand-painted shoes that blend artistic flair with comfortable style.
+                </p>
+                <a href="#" class="mt-8 inline-block bg-rose-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-rose-700 transition-transform transform hover:scale-105" data-page="products">
+                    Shop Now
+                </a>
+            </div>
+        </section>
+
+        <!-- Product Grid Section (Page: products) -->
+        <section id="products-page" class="page py-20 hidden">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Our Designs</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    <!-- Product Card 1 -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
+                        <img src="https://placehold.co/600x400/93c5fd/ffffff?text=Blue+Floral+Sneakers" alt="Blue Floral Sneakers" class="w-full h-64 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold text-gray-800">Floral Fantasy Sneakers</h3>
+                            <p class="mt-2 text-gray-600">Delicate floral patterns painted on classic canvas sneakers.</p>
+                            <div class="mt-4 flex justify-between items-center">
+                                <span class="text-2xl font-bold text-gray-900">$29.99</span>
+                                <button class="bg-rose-600 text-white py-2 px-6 rounded-full hover:bg-rose-700 transition-colors duration-300" data-product-name="Floral Fantasy Sneakers">
+                                    Purchase
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Card 2 -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
+                        <img src="https://placehold.co/600x400/fecaca/ffffff?text=Pink+Mandala+Shoes" alt="Pink Mandala Shoes" class="w-full h-64 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold text-gray-800">Mandala Dream Slip-ons</h3>
+                            <p class="mt-2 text-gray-600">Intricate mandala designs that bring calm and color to your steps.</p>
+                            <div class="mt-4 flex justify-between items-center">
+                                <span class="text-2xl font-bold text-gray-900">$49.99</span>
+                                <button class="bg-rose-600 text-white py-2 px-6 rounded-full hover:bg-rose-700 transition-colors duration-300" data-product-name="Mandala Dream Slip-ons">
+                                    Purchase
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Card 3 -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
+                        <img src="https://placehold.co/600x400/fff3b0/ffffff?text=Custom+Painted+Shoes" alt="Custom Painted Shoes" class="w-full h-64 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold text-gray-800">Custom Wearable Art</h3>
+                            <p class="mt-2 text-gray-600">A personal design created just for you. Contact us for details.</p>
+                            <div class="mt-4 flex justify-between items-center">
+                                <span class="text-2xl font-bold text-gray-900">$79.99</span>
+                                <button class="bg-rose-600 text-white py-2 px-6 rounded-full hover:bg-rose-700 transition-colors duration-300" data-product-name="Custom Wearable Art">
+                                    Purchase
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- More products would be added here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section (Page: about) -->
+        <section id="about-page" class="page bg-white py-20 hidden">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Our Story</h2>
+                <div class="flex flex-col lg:flex-row items-center lg:space-x-12">
+                    <div class="lg:w-1/2 mb-8 lg:mb-0">
+                        <img src="https://placehold.co/800x600/b0b0b0/ffffff?text=The+Artist's+Studio" alt="The Artist's Studio" class="rounded-xl shadow-xl w-full">
+                    </div>
+                    <div class="lg:w-1/2">
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            Gulabikari was born from a passion for art and a love for self-expression. We believe that art shouldn't be confined to a canvas—it should be a part of your everyday life. Each pair of shoes is a unique piece of wearable art, meticulously hand-painted with care and creativity.
+                        </p>
+                        <p class="mt-4 text-gray-600 text-lg leading-relaxed">
+                            Our designs are inspired by vibrant colors, traditional patterns, and the beauty of nature. We are committed to creating not just shoes, but stories that you can carry with you, step by step. Thank you for supporting our craft and becoming a part of the Gulabikari family.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section (Page: contact) -->
+        <section id="contact-page" class="page bg-rose-50 py-20 hidden">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Get in Touch</h2>
+                <div class="max-w-xl mx-auto bg-white rounded-xl shadow-lg p-8">
+                    <form id="contact-form" class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-gray-700 font-medium mb-2">Name</label>
+                            <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500" placeholder="Your Name" required>
+                        </div>
+                        <div>
+                            <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500" placeholder="your.email@example.com" required>
+                        </div>
+                        <div>
+                            <label for="message" class="block text-gray-700 font-medium mb-2">Message</label>
+                            <textarea id="message" name="message" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500" placeholder="Your message here..." required></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="w-full bg-rose-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-rose-700 transition-colors duration-300">
+                                Send Message
+                            </button>
+                        </div>
+                    </form>
+                    <div id="form-message" class="mt-4 text-center text-rose-600 font-medium hidden">
+                        Thank you! Your message has been sent.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Order Confirmation Section (New Page: order-summary) -->
+        <section id="order-summary-page" class="page py-20 hidden">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">Thank you for your order!</h2>
+                <p class="text-xl text-gray-600 mb-8">
+                    Your purchase of "<span id="purchased-product" class="font-bold"></span>" is being processed.
+                    You will receive an email confirmation shortly.
+                </p>
+                <a href="#" class="inline-block bg-rose-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-rose-700 transition-transform transform hover:scale-105" data-page="products">
+                    Continue Shopping
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 Gulabikari. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for page navigation and form submission -->
+    <script>
+        // Get all pages and navigation links
+        const pages = document.querySelectorAll('.page');
+        const navLinks = document.querySelectorAll('[data-page]');
+        const purchasedProductElement = document.getElementById('purchased-product');
+        const purchaseButtons = document.querySelectorAll('[data-product-name]');
+
+        // Function to show the selected page and hide all others
+        function showPage(pageName) {
+            pages.forEach(page => {
+                if (page.id === `${pageName}-page`) {
+                    page.classList.remove('hidden');
+                } else {
+                    page.classList.add('hidden');
+                }
+            });
+            window.scrollTo({
+                top: 0
+            });
+        }
+
+        // Add event listeners to all navigation links
+        navLinks.forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault();
+                const pageName = event.target.dataset.page;
+                if (pageName) {
+                    showPage(pageName);
+                }
+            });
+        });
+
+        // Handle a "purchase" event
+        function handlePurchase(productName) {
+            // This is where you would send data to your backend
+            console.log(`Sending purchase data for product: ${productName} to backend.`);
+
+            // After the data is sent and confirmed by your backend, show the confirmation page
+            purchasedProductElement.textContent = productName;
+            showPage('order-summary');
+        }
+
+        // Add event listeners to all purchase buttons
+        purchaseButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                const productName = event.target.dataset.productName;
+                if (productName) {
+                    handlePurchase(productName);
+                }
+            });
+        });
+
+
+        // Handle the contact form submission
+        document.getElementById('contact-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const form = event.target;
+            const messageElement = document.getElementById('form-message');
+
+            // Simulate a network request
+            setTimeout(() => {
+                form.reset();
+                messageElement.classList.remove('hidden');
+            }, 1000);
+        });
+
+        // Initially show the home page
+        showPage('home');
+    </script>
+</body>
+
+</html>
