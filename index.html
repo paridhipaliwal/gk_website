@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Cormorant Garamond', serif;
             background-color: #f7fafc;
         }
 
@@ -77,8 +77,8 @@
 
           // Data for the products and testimonials
           const products = [
-            { id: "p1", name: "Floral Fantasy Sneakers", category: "Footwear", description: "Delicate floral patterns painted on classic canvas sneakers.", price: "29.99", image: "https://placehold.co/600x400/93c5fd/ffffff?text=Blue+Floral+Sneakers" },
-            { id: "p2", name: "Mandala Dream Slip-ons", category: "Footwear", description: "Intricate mandala designs that bring calm and color to your steps.", price: "49.99", image: "https://placehold.co/600x400/fecaca/ffffff?text=Pink+Mandala+Shoes" },
+            { id: "p1", name: "Floral Fantasy Sneakers", category: "Footwear", description: "Delicate floral patterns painted on classic canvas sneakers.", price: "20", image: "https://placehold.co/600x400/93c5fd/ffffff?text=Blue+Floral+Sneakers" },
+            { id: "p2", name: "Mandala Dream Slip-ons", category: "Footwear", description: "Intricate mandala designs that bring calm and color to your steps.", price: "41", image: "https://placehold.co/600x400/fecaca/ffffff?text=Pink+Mandala+Shoes" },
             { id: "p3", name: "Custom Wearable Art", category: "Footwear", description: "A personal design created just for you. Contact us for details.", price: "79.99", image: "https://placehold.co/600x400/fff3b0/ffffff?text=Custom+Painted+Shoes" },
             { id: "p4", name: "Sling Bag", category: "Handbags", description: "A stylish and compact sling bag, perfect for everyday essentials.", price: "999", image: "https://placehold.co/600x400/93c5fd/ffffff?text=Sling+Bag" },
             { id: "p5", name: "Tote Bag", category: "Handbags", description: "A spacious tote bag, ideal for shopping or a day out.", price: "999", image: "https://placehold.co/600x400/fecaca/ffffff?text=Tote+Bag" },
@@ -175,7 +175,7 @@
                 React.createElement("h3", { className: "text-2xl font-semibold text-gray-800" }, product.name),
                 React.createElement("p", { className: "mt-2 text-gray-600" }, product.description),
                 React.createElement("div", { className: "mt-4 flex justify-between items-center" },
-                  React.createElement("span", { className: "text-2xl font-bold text-gray-900" }, `$${product.price}`),
+                  React.createElement("span", { className: "text-2xl font-bold text-gray-900" }, `₹${product.price}`),
                   React.createElement("button", {
                     onClick: () => handleAddToCart(product),
                     className: "bg-rose-600 text-white py-2 px-6 rounded-full hover:bg-rose-700 transition-colors duration-300"
@@ -195,7 +195,8 @@
                 React.createElement("section", { className: "bg-rose-50 py-32" },
                   React.createElement("div", { className: "container mx-auto px-6 text-center" },
                     React.createElement("h1", { className: "text-5xl font-extrabold text-gray-800 leading-tight" }, "Royal Heritage in Every Creation"),
-                    React.createElement("p", { className: "mt-4 text-xl text-gray-600 max-w-2xl mx-auto" }, "Discover our collection of unique, handcrafted footwear, bangles, and handbags that blend artistic flair with timeless style."),
+                    // React.createElement("p", { className: "mt-4 text-xl text-gray-600 max-w-2xl mx-auto" }, "Welcome to the world of GulabiKarii \n Sarees | Suits | Decor | Accessories"),
+                    React.createElement("p",{ className: "mt-4 text-xl text-gray-600 max-w-2xl mx-auto" },"Welcome to the world of GulabiKarii",React.createElement("br", null), "Sarees | Suits | Decor | Accessories"),
                     React.createElement("button", { onClick: () => setPage('products'), className: "mt-8 inline-block bg-rose-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-rose-700 transition-transform transform hover:scale-105" }, "Shop Now")
                   )
                 ),
@@ -376,7 +377,7 @@
             React.createElement("div", { className: "bg-gray-50 min-h-screen font-inter flex flex-col" },
               React.createElement("nav", { className: "bg-white shadow-lg fixed w-full z-50" },
                 React.createElement("div", { className: "container mx-auto px-6 py-4 flex justify-between items-center" },
-                  React.createElement("button", { onClick: () => setPage('home'), className: "text-2xl font-bold text-gray-800" }, "Gulabikari"),
+                  React.createElement("button", { onClick: () => setPage('home'), className: "text-2xl font-bold text-gray-800" }, "Gulabikarii"),
                   React.createElement("div", { className: "flex items-center space-x-4" },
                     React.createElement("button", { onClick: () => setPage('home'), className: `text-gray-600 hover:text-gray-900 transition-colors duration-300 ${page === 'home' ? 'font-semibold text-gray-900' : ''}` }, "Home"),
                     React.createElement("button", { onClick: () => setPage('products'), className: `text-gray-600 hover:text-gray-900 transition-colors duration-300 ${page === 'products' ? 'font-semibold text-gray-900' : ''}` }, "Products"),
