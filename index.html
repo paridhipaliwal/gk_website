@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gulabikari - Hand-Painted Footwear</title>
-    <!-- Tailwind CSS CDN -->
+    <title>Gulabikari - Hand-Painted Heritage</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,241 +14,396 @@
             background-color: #f7fafc;
         }
 
-        .scroll-smooth {
-            scroll-behavior: smooth;
+        .nav-link.active {
+            font-weight: 600;
+            color: #1a202c;
         }
     </style>
 </head>
+<body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-<body class="scroll-smooth">
+        // Create a context to share Firebase instances and user info
+        const FirebaseContext = React.createContext(null);
 
-    <!-- Navigation Bar -->
-    <nav class="bg-white shadow-lg fixed w-full z-50">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold text-gray-800" data-page="home">Gulabikari</a>
-            <div class="flex items-center space-x-4">
-                <a href="#" class="text-gray-600 hover:text-gray-900 transition-colors duration-300" data-page="products">Products</a>
-                <a href="#" class="text-gray-600 hover:text-gray-900 transition-colors duration-300" data-page="about">About</a>
-                <a href="#" class="text-gray-600 hover:text-gray-900 transition-colors duration-300" data-page="contact">Contact</a>
-            </div>
-        </div>
-    </nav>
+        // Firebase Provider Component
+        const FirebaseProvider = ({ children }) => {
+            const [db, setDb] = React.useState(null);
+            const [auth, setAuth] = React.useState(null);
+            const [userId, setUserId] = React.useState(null);
 
-    <!-- Main Content Container for pages -->
-    <div class="pt-16">
-        <!-- Hero Section (Page: home) -->
-        <section id="home-page" class="page bg-rose-50 py-32">
-            <div class="container mx-auto px-6 text-center">
-                <h1 class="text-5xl font-extrabold text-gray-800 leading-tight">
-                    Hand-Painted Art for Your Feet
-                </h1>
-                <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
-                    Discover our collection of unique, hand-painted shoes that blend artistic flair with comfortable style.
-                </p>
-                <a href="#" class="mt-8 inline-block bg-rose-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-rose-700 transition-transform transform hover:scale-105" data-page="products">
-                    Shop Now
-                </a>
-            </div>
-        </section>
+            React.useEffect(() => {
+                try {
+                    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+                    const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
-        <!-- Product Grid Section (Page: products) -->
-        <section id="products-page" class="page py-20 hidden">
-            <div class="container mx-auto px-6">
-                <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Our Designs</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                    <!-- Product Card 1 -->
-                    <div class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
-                        <img src="https://placehold.co/600x400/93c5fd/ffffff?text=Blue+Floral+Sneakers" alt="Blue Floral Sneakers" class="w-full h-64 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-2xl font-semibold text-gray-800">Floral Fantasy Sneakers</h3>
-                            <p class="mt-2 text-gray-600">Delicate floral patterns painted on classic canvas sneakers.</p>
-                            <div class="mt-4 flex justify-between items-center">
-                                <span class="text-2xl font-bold text-gray-900">$29.99</span>
-                                <button class="bg-rose-600 text-white py-2 px-6 rounded-full hover:bg-rose-700 transition-colors duration-300" data-product-name="Floral Fantasy Sneakers">
-                                    Purchase
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                    const app = initializeApp(firebaseConfig);
+                    const authInstance = getAuth(app);
+                    const dbInstance = getFirestore(app);
 
-                    <!-- Product Card 2 -->
-                    <div class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
-                        <img src="https://placehold.co/600x400/fecaca/ffffff?text=Pink+Mandala+Shoes" alt="Pink Mandala Shoes" class="w-full h-64 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-2xl font-semibold text-gray-800">Mandala Dream Slip-ons</h3>
-                            <p class="mt-2 text-gray-600">Intricate mandala designs that bring calm and color to your steps.</p>
-                            <div class="mt-4 flex justify-between items-center">
-                                <span class="text-2xl font-bold text-gray-900">$49.99</span>
-                                <button class="bg-rose-600 text-white py-2 px-6 rounded-full hover:bg-rose-700 transition-colors duration-300" data-product-name="Mandala Dream Slip-ons">
-                                    Purchase
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                    setAuth(authInstance);
+                    setDb(dbInstance);
 
-                    <!-- Product Card 3 -->
-                    <div class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
-                        <img src="https://placehold.co/600x400/fff3b0/ffffff?text=Custom+Painted+Shoes" alt="Custom Painted Shoes" class="w-full h-64 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-2xl font-semibold text-gray-800">Custom Wearable Art</h3>
-                            <p class="mt-2 text-gray-600">A personal design created just for you. Contact us for details.</p>
-                            <div class="mt-4 flex justify-between items-center">
-                                <span class="text-2xl font-bold text-gray-900">$79.99</span>
-                                <button class="bg-rose-600 text-white py-2 px-6 rounded-full hover:bg-rose-700 transition-colors duration-300" data-product-name="Custom Wearable Art">
-                                    Purchase
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- More products would be added here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- About Section (Page: about) -->
-        <section id="about-page" class="page bg-white py-20 hidden">
-            <div class="container mx-auto px-6">
-                <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Our Story</h2>
-                <div class="flex flex-col lg:flex-row items-center lg:space-x-12">
-                    <div class="lg:w-1/2 mb-8 lg:mb-0">
-                        <img src="https://placehold.co/800x600/b0b0b0/ffffff?text=The+Artist's+Studio" alt="The Artist's Studio" class="rounded-xl shadow-xl w-full">
-                    </div>
-                    <div class="lg:w-1/2">
-                        <p class="text-gray-600 text-lg leading-relaxed">
-                            Gulabikari was born from a passion for art and a love for self-expression. We believe that art shouldn't be confined to a canvas—it should be a part of your everyday life. Each pair of shoes is a unique piece of wearable art, meticulously hand-painted with care and creativity.
-                        </p>
-                        <p class="mt-4 text-gray-600 text-lg leading-relaxed">
-                            Our designs are inspired by vibrant colors, traditional patterns, and the beauty of nature. We are committed to creating not just shoes, but stories that you can carry with you, step by step. Thank you for supporting our craft and becoming a part of the Gulabikari family.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section (Page: contact) -->
-        <section id="contact-page" class="page bg-rose-50 py-20 hidden">
-            <div class="container mx-auto px-6">
-                <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Get in Touch</h2>
-                <div class="max-w-xl mx-auto bg-white rounded-xl shadow-lg p-8">
-                    <form id="contact-form" class="space-y-6">
-                        <div>
-                            <label for="name" class="block text-gray-700 font-medium mb-2">Name</label>
-                            <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500" placeholder="Your Name" required>
-                        </div>
-                        <div>
-                            <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
-                            <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500" placeholder="your.email@example.com" required>
-                        </div>
-                        <div>
-                            <label for="message" class="block text-gray-700 font-medium mb-2">Message</label>
-                            <textarea id="message" name="message" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500" placeholder="Your message here..." required></textarea>
-                        </div>
-                        <div class="text-center">
-                            <button type="submit" class="w-full bg-rose-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-rose-700 transition-colors duration-300">
-                                Send Message
-                            </button>
-                        </div>
-                    </form>
-                    <div id="form-message" class="mt-4 text-center text-rose-600 font-medium hidden">
-                        Thank you! Your message has been sent.
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Order Confirmation Section (New Page: order-summary) -->
-        <section id="order-summary-page" class="page py-20 hidden">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">Thank you for your order!</h2>
-                <p class="text-xl text-gray-600 mb-8">
-                    Your purchase of "<span id="purchased-product" class="font-bold"></span>" is being processed.
-                    You will receive an email confirmation shortly.
-                </p>
-                <a href="#" class="inline-block bg-rose-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-rose-700 transition-transform transform hover:scale-105" data-page="products">
-                    Continue Shopping
-                </a>
-            </div>
-        </section>
-    </div>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8">
-        <div class="container mx-auto px-6 text-center">
-            <p>&copy; 2025 Gulabikari. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <!-- JavaScript for page navigation and form submission -->
-    <script>
-        // Get all pages and navigation links
-        const pages = document.querySelectorAll('.page');
-        const navLinks = document.querySelectorAll('[data-page]');
-        const purchasedProductElement = document.getElementById('purchased-product');
-        const purchaseButtons = document.querySelectorAll('[data-product-name]');
-
-        // Function to show the selected page and hide all others
-        function showPage(pageName) {
-            pages.forEach(page => {
-                if (page.id === `${pageName}-page`) {
-                    page.classList.remove('hidden');
-                } else {
-                    page.classList.add('hidden');
+                    onAuthStateChanged(authInstance, async (user) => {
+                        if (user) {
+                            setUserId(user.uid);
+                        } else if (initialAuthToken) {
+                            await signInWithCustomToken(authInstance, initialAuthToken);
+                        } else {
+                            await signInAnonymously(authInstance);
+                        }
+                    });
+                } catch (e) {
+                    console.error("Error initializing Firebase:", e);
                 }
-            });
-            window.scrollTo({
-                top: 0
-            });
-        }
+            }, []);
 
-        // Add event listeners to all navigation links
-        navLinks.forEach(link => {
-            link.addEventListener('click', (event) => {
-                event.preventDefault();
-                const pageName = event.target.dataset.page;
-                if (pageName) {
-                    showPage(pageName);
-                }
-            });
-        });
+            return React.createElement(FirebaseContext.Provider, { value: { db, auth, userId } }, children);
+        };
 
-        // Handle a "purchase" event
-        function handlePurchase(productName) {
-            // This is where you would send data to your backend
-            console.log(`Sending purchase data for product: ${productName} to backend.`);
+        // Main App Component
+        const App = () => {
+          const { db, userId } = React.useContext(FirebaseContext);
+          const [page, setPage] = React.useState('home');
+          const [cart, setCart] = React.useState([]);
+          const [purchases, setPurchases] = React.useState([]);
 
-            // After the data is sent and confirmed by your backend, show the confirmation page
-            purchasedProductElement.textContent = productName;
-            showPage('order-summary');
-        }
+          // Data for the products and testimonials
+          const products = [
+            { id: "p1", name: "Floral Fantasy Sneakers", category: "Footwear", description: "Delicate floral patterns painted on classic canvas sneakers.", price: "29.99", image: "https://placehold.co/600x400/93c5fd/ffffff?text=Blue+Floral+Sneakers" },
+            { id: "p2", name: "Mandala Dream Slip-ons", category: "Footwear", description: "Intricate mandala designs that bring calm and color to your steps.", price: "49.99", image: "https://placehold.co/600x400/fecaca/ffffff?text=Pink+Mandala+Shoes" },
+            { id: "p3", name: "Custom Wearable Art", category: "Footwear", description: "A personal design created just for you. Contact us for details.", price: "79.99", image: "https://placehold.co/600x400/fff3b0/ffffff?text=Custom+Painted+Shoes" },
+            { id: "p4", name: "Sling Bag", category: "Handbags", description: "A stylish and compact sling bag, perfect for everyday essentials.", price: "999", image: "https://placehold.co/600x400/93c5fd/ffffff?text=Sling+Bag" },
+            { id: "p5", name: "Tote Bag", category: "Handbags", description: "A spacious tote bag, ideal for shopping or a day out.", price: "999", image: "https://placehold.co/600x400/fecaca/ffffff?text=Tote+Bag" },
+            { id: "p6", name: "Shoulder Bag", category: "Handbags", description: "An elegant shoulder bag with intricate hand-painted designs.", price: "999", image: "https://placehold.co/600x400/93c5fd/ffffff?text=Shoulder+Bag" },
+            { id: "p7", name: "Laptop Bag with Pouch", category: "Handbags", description: "A functional laptop bag complete with a matching accessory pouch.", price: "999", image: "https://placehold.co/600x400/fecaca/ffffff?text=Laptop+Bag" },
+            { id: "p8", name: "Laptop Sleeve", category: "Handbags", description: "Protect your laptop in style with this hand-painted sleeve.", price: "499", image: "https://placehold.co/600x400/93c5fd/ffffff?text=Laptop+Sleeve" },
+            { id: "p9", name: "Kundan Bangles", category: "Bangles", description: "Traditional Kundan-style bangles with intricate stone work.", price: "199", image: "https://placehold.co/600x400/93c5fd/ffffff?text=Kundan+Bangles" },
+            { id: "p10", name: "Laakh Bangles", category: "Bangles", description: "Handcrafted bangles with a traditional lacquer finish and vibrant colors.", price: "199", image: "https://placehold.co/600x400/fecaca/ffffff?text=Laakh+Bangles" },
+            { id: "p11", name: "Glass Bangles", category: "Bangles", description: "Delicate glass bangles that add a touch of sparkle to any outfit.", price: "499", image: "https://placehold.co/600x400/fff3b0/ffffff?text=Glass+Bangles" }
+          ];
 
-        // Add event listeners to all purchase buttons
-        purchaseButtons.forEach(button => {
-            button.addEventListener('click', (event) => {
-                const productName = event.target.dataset.productName;
-                if (productName) {
-                    handlePurchase(productName);
-                }
-            });
-        });
+          const testimonials = [
+            { quote: "The Floral Fantasy Sneakers are a dream! They're so unique and comfortable.", author: "— Anaya S." },
+            { quote: "I love my new tote bag! The design is beautiful and the quality is amazing.", author: "— Rahul K." },
+            { quote: "The Kundan Bangles are even more stunning in person. Perfect for weddings!", author: "— Priya G." }
+          ];
 
+          // Set up real-time listeners for cart and purchases
+          React.useEffect(() => {
+              if (db && userId) {
+                  const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                  // Cart listener
+                  const cartQuery = query(collection(db, `/artifacts/${appId}/users/${userId}/cart`), orderBy('timestamp', 'desc'));
+                  const unsubscribeCart = onSnapshot(cartQuery, (querySnapshot) => {
+                      const cartList = querySnapshot.docs.map(doc => ({
+                          id: doc.id,
+                          ...doc.data()
+                      }));
+                      setCart(cartList);
+                  });
 
-        // Handle the contact form submission
-        document.getElementById('contact-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const form = event.target;
-            const messageElement = document.getElementById('form-message');
+                  // Purchases listener
+                  const purchasesQuery = query(collection(db, `/artifacts/${appId}/users/${userId}/purchases`), orderBy('timestamp', 'desc'));
+                  const unsubscribePurchases = onSnapshot(purchasesQuery, (querySnapshot) => {
+                      const purchaseList = querySnapshot.docs.map(doc => ({
+                          id: doc.id,
+                          ...doc.data()
+                      }));
+                      setPurchases(purchaseList);
+                  });
 
-            // Simulate a network request
-            setTimeout(() => {
-                form.reset();
-                messageElement.classList.remove('hidden');
-            }, 1000);
-        });
+                  return () => {
+                      unsubscribeCart();
+                      unsubscribePurchases();
+                  };
+              }
+          }, [db, userId]);
 
-        // Initially show the home page
-        showPage('home');
+          // Function to add a product to the cart
+          const handleAddToCart = async (product) => {
+            if (!db || !userId) {
+              console.error("Database not initialized or user not authenticated.");
+              return;
+            }
+
+            try {
+              const docRef = await addDoc(collection(db, `/artifacts/${__app_id}/users/${userId}/cart`), {
+                ...product,
+                timestamp: new Date().toISOString()
+              });
+              console.log("Added to cart with ID: ", docRef.id);
+            } catch (e) {
+              console.error("Error adding to cart: ", e);
+            }
+          };
+
+          // Function to move items from cart to purchases
+          const handleCheckout = async () => {
+              if (!db || !userId || cart.length === 0) {
+                  return;
+              }
+              try {
+                  const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                  for (const item of cart) {
+                      await addDoc(collection(db, `/artifacts/${appId}/users/${userId}/purchases`), {
+                          productName: item.name,
+                          price: item.price,
+                          timestamp: new Date().toISOString()
+                      });
+                      await deleteDoc(doc(db, `/artifacts/${appId}/users/${userId}/cart`, item.id));
+                  }
+                  console.log("Checkout successful!");
+                  setPage('home'); // Redirect to home or a confirmation page
+              } catch (e) {
+                  console.error("Error during checkout: ", e);
+              }
+          };
+
+          // Reusable Product Card Component
+          const ProductCard = ({ product }) => (
+            React.createElement("div", { className: "bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300" },
+              React.createElement("img", { src: product.image, alt: product.name, className: "w-full h-64 object-cover" }),
+              React.createElement("div", { className: "p-6" },
+                React.createElement("h3", { className: "text-2xl font-semibold text-gray-800" }, product.name),
+                React.createElement("p", { className: "mt-2 text-gray-600" }, product.description),
+                React.createElement("div", { className: "mt-4 flex justify-between items-center" },
+                  React.createElement("span", { className: "text-2xl font-bold text-gray-900" }, `$${product.price}`),
+                  React.createElement("button", {
+                    onClick: () => handleAddToCart(product),
+                    className: "bg-rose-600 text-white py-2 px-6 rounded-full hover:bg-rose-700 transition-colors duration-300"
+                  }, "Add to Cart")
+                )
+              )
+            )
+          );
+
+          // Home Page Component
+          const HomePage = () => {
+            const featuredProducts = products.filter(p => p.category === "Footwear" || p.category === "Handbags").slice(0, 3);
+            const newArrivals = products.slice(-4);
+            
+            return (
+              React.createElement(React.Fragment, null,
+                React.createElement("section", { className: "bg-rose-50 py-32" },
+                  React.createElement("div", { className: "container mx-auto px-6 text-center" },
+                    React.createElement("h1", { className: "text-5xl font-extrabold text-gray-800 leading-tight" }, "Royal Heritage in Every Creation"),
+                    React.createElement("p", { className: "mt-4 text-xl text-gray-600 max-w-2xl mx-auto" }, "Discover our collection of unique, handcrafted footwear, bangles, and handbags that blend artistic flair with timeless style."),
+                    React.createElement("button", { onClick: () => setPage('products'), className: "mt-8 inline-block bg-rose-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-rose-700 transition-transform transform hover:scale-105" }, "Shop Now")
+                  )
+                ),
+                React.createElement("section", { className: "py-20 bg-white" },
+                  React.createElement("div", { className: "container mx-auto px-6 text-center" },
+                    React.createElement("h2", { className: "text-4xl font-bold text-gray-800 mb-12" }, "Featured Designs"),
+                    React.createElement("div", { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10" },
+                      featuredProducts.map((product, index) => React.createElement(ProductCard, { key: index, product: product }))
+                    ),
+                    React.createElement("button", { onClick: () => setPage('products'), className: "mt-12 inline-block bg-gray-800 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-900 transition-transform transform hover:scale-105" }, "View All Products")
+                  )
+                ),
+                React.createElement("section", { className: "py-20 bg-gray-100" },
+                  React.createElement("div", { className: "container mx-auto px-6 text-center" },
+                    React.createElement("h2", { className: "text-4xl font-bold text-gray-800 mb-12" }, "New Arrivals"),
+                    React.createElement("div", { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10" },
+                      newArrivals.map((product, index) => React.createElement(ProductCard, { key: index, product: product }))
+                    )
+                  )
+                ),
+                React.createElement("section", { className: "py-20 bg-white" },
+                  React.createElement("div", { className: "container mx-auto px-6 text-center" },
+                    React.createElement("h2", { className: "text-4xl font-bold text-gray-800 mb-12" }, "What Our Customers Say"),
+                    React.createElement("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-8" },
+                      testimonials.map((testimonial, index) => (
+                        React.createElement("div", { key: index, className: "bg-rose-50 rounded-xl p-8 shadow-md" },
+                          React.createElement("p", { className: "text-lg text-gray-700 mb-4 italic" }, `"${testimonial.quote}"`),
+                          React.createElement("p", { className: "font-semibold text-gray-800" }, testimonial.author)
+                        )
+                      ))
+                    )
+                  )
+                )
+              )
+            );
+          };
+
+          // Products Page Component
+          const ProductsPage = () => (
+            React.createElement("section", { className: "py-20 bg-white" },
+              React.createElement("div", { className: "container mx-auto px-6 text-center" },
+                React.createElement("h2", { className: "text-4xl font-bold text-gray-800 mb-12" }, "All Products"),
+                React.createElement("div", { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10" },
+                  products.map((product, index) => React.createElement(ProductCard, { key: index, product: product }))
+                )
+              )
+            )
+          );
+
+          // Cart Page Component
+          const CartPage = () => {
+              const total = cart.reduce((sum, item) => sum + parseFloat(item.price), 0).toFixed(2);
+              return React.createElement("section", { className: "py-20 bg-white" },
+                  React.createElement("div", { className: "container mx-auto px-6" },
+                      React.createElement("h2", { className: "text-4xl font-bold text-gray-800 mb-8 text-center" }, "Your Shopping Cart"),
+                      cart.length > 0 ? (
+                          React.createElement(React.Fragment, null,
+                              React.createElement("div", { className: "bg-rose-50 rounded-xl shadow-lg p-8" },
+                                  React.createElement("ul", { className: "divide-y divide-gray-200" },
+                                      cart.map((item, index) => (
+                                          React.createElement("li", { key: index, className: "py-4 flex justify-between items-center" },
+                                              React.createElement("div", null,
+                                                  React.createElement("h3", { className: "text-lg font-semibold text-gray-800" }, item.name),
+                                                  React.createElement("p", { className: "text-sm text-gray-500" }, item.category)
+                                              ),
+                                              React.createElement("span", { className: "text-lg font-bold text-gray-900" }, `$${item.price}`)
+                                          )
+                                      ))
+                                  ),
+                                  React.createElement("div", { className: "mt-6 pt-6 border-t border-gray-300 flex justify-between items-center" },
+                                      React.createElement("span", { className: "text-xl font-bold text-gray-800" }, "Total:"),
+                                      React.createElement("span", { className: "text-2xl font-bold text-rose-600" }, `$${total}`)
+                                  ),
+                                  React.createElement("div", { className: "mt-8 text-center" },
+                                      React.createElement("button", { onClick: handleCheckout, className: "bg-rose-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-rose-700 transition-colors duration-300" }, "Checkout")
+                                  )
+                              )
+                          )
+                      ) : (
+                          React.createElement("div", { className: "text-center text-gray-500 text-lg" }, "Your cart is empty.")
+                      )
+                  )
+              );
+          };
+
+          // About Page Component
+          const AboutPage = () => (
+            React.createElement("section", { className: "py-20 bg-white" },
+              React.createElement("div", { className: "container mx-auto px-6 text-center" },
+                React.createElement("h2", { className: "text-4xl font-bold text-gray-800 mb-12" }, "Our Story"),
+                React.createElement("div", { className: "flex flex-col lg:flex-row items-center lg:space-x-12" },
+                  React.createElement("div", { className: "lg:w-1/2 mb-8 lg:mb-0" },
+                    React.createElement("img", { src: "https://placehold.co/800x600/b0b0b0/ffffff?text=The+Artist's+Studio", alt: "The Artist's Studio", className: "rounded-xl shadow-xl w-full" })
+                  ),
+                  React.createElement("div", { className: "lg:w-1/2 text-left" },
+                    React.createElement("p", { className: "text-gray-600 text-lg leading-relaxed" }, "Gulabikari was born from a passion for art and a love for self-expression. We believe that art shouldn't be confined to a canvas—it should be a part of your everyday life. Each pair of shoes is a unique piece of wearable art, meticulously hand-painted with care and creativity."),
+                    React.createElement("p", { className: "mt-4 text-gray-600 text-lg leading-relaxed" }, "Our designs are inspired by vibrant colors, traditional patterns, and the beauty of nature. We are committed to creating not just shoes, but stories that you can carry with you, step by step. Thank you for supporting our craft and becoming a part of the Gulabikari family.")
+                  )
+                )
+              )
+            )
+          );
+
+          // Contact Page Component
+          const ContactPage = () => (
+            React.createElement("section", { className: "py-20 bg-white" },
+              React.createElement("div", { className: "container mx-auto px-6 text-center" },
+                React.createElement("h2", { className: "text-4xl font-bold text-gray-800 mb-12" }, "Get in Touch"),
+                React.createElement("div", { className: "max-w-xl mx-auto bg-rose-50 rounded-xl shadow-lg p-8 text-left" },
+                  React.createElement("form", { className: "space-y-6" },
+                    React.createElement("div", null,
+                      React.createElement("label", { htmlFor: "name", className: "block text-gray-700 font-medium mb-2" }, "Name"),
+                      React.createElement("input", { type: "text", id: "name", name: "name", className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500" })
+                    ),
+                    React.createElement("div", null,
+                      React.createElement("label", { htmlFor: "email", className: "block text-gray-700 font-medium mb-2" }, "Email"),
+                      React.createElement("input", { type: "email", id: "email", name: "email", className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500" })
+                    ),
+                    React.createElement("div", null,
+                      React.createElement("label", { htmlFor: "message", className: "block text-gray-700 font-medium mb-2" }, "Message"),
+                      React.createElement("textarea", { id: "message", name: "message", rows: "4", className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500" })
+                    ),
+                    React.createElement("div", { className: "text-center" },
+                      React.createElement("button", { type: "submit", className: "bg-rose-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-rose-700 transition-colors duration-300" }, "Send Message")
+                    )
+                  )
+                )
+              )
+            )
+          );
+
+          // Recent Purchases Component
+          const RecentPurchases = () => (
+            React.createElement("section", { className: "py-8 bg-gray-200" },
+              React.createElement("div", { className: "container mx-auto px-6" },
+                React.createElement("h3", { className: "text-xl font-bold text-gray-800 mb-4" }, "Your Recent Purchases"),
+                React.createElement("p", { className: "text-sm text-gray-600 mb-4" }, "Your User ID: ", React.createElement("span", { className: "font-mono bg-gray-300 px-2 py-1 rounded-md" }, userId || 'Loading...')),
+                React.createElement("ul", { className: "list-disc pl-5 space-y-2" },
+                  purchases.length > 0 ? (
+                    purchases.map((purchase) => (
+                      React.createElement("li", { key: purchase.id, className: "text-gray-700" },
+                        "Purchased ", React.createElement("span", { className: "font-semibold" }, purchase.productName),
+                        " for ", React.createElement("span", { className: "font-semibold" }, `$${purchase.price}`),
+                        " on ", React.createElement("span", { className: "text-sm italic" }, new Date(purchase.timestamp).toLocaleString())
+                      )
+                    ))
+                  ) : (
+                    React.createElement("li", { className: "text-gray-500" }, "No purchases yet.")
+                  )
+                )
+              )
+            )
+          );
+
+          // Main Render Logic
+          let content;
+          switch (page) {
+            case 'home':
+              content = React.createElement(HomePage, null);
+              break;
+            case 'products':
+              content = React.createElement(ProductsPage, null);
+              break;
+            case 'cart':
+              content = React.createElement(CartPage, null);
+              break;
+            case 'about':
+              content = React.createElement(AboutPage, null);
+              break;
+            case 'contact':
+              content = React.createElement(ContactPage, null);
+              break;
+            default:
+              content = React.createElement(HomePage, null);
+          }
+
+          return (
+            React.createElement("div", { className: "bg-gray-50 min-h-screen font-inter flex flex-col" },
+              React.createElement("nav", { className: "bg-white shadow-lg fixed w-full z-50" },
+                React.createElement("div", { className: "container mx-auto px-6 py-4 flex justify-between items-center" },
+                  React.createElement("button", { onClick: () => setPage('home'), className: "text-2xl font-bold text-gray-800" }, "Gulabikari"),
+                  React.createElement("div", { className: "flex items-center space-x-4" },
+                    React.createElement("button", { onClick: () => setPage('home'), className: `text-gray-600 hover:text-gray-900 transition-colors duration-300 ${page === 'home' ? 'font-semibold text-gray-900' : ''}` }, "Home"),
+                    React.createElement("button", { onClick: () => setPage('products'), className: `text-gray-600 hover:text-gray-900 transition-colors duration-300 ${page === 'products' ? 'font-semibold text-gray-900' : ''}` }, "Products"),
+                    React.createElement("button", { onClick: () => setPage('about'), className: `text-gray-600 hover:text-gray-900 transition-colors duration-300 ${page === 'about' ? 'font-semibold text-gray-900' : ''}` }, "About"),
+                    React.createElement("button", { onClick: () => setPage('contact'), className: `text-gray-600 hover:text-gray-900 transition-colors duration-300 ${page === 'contact' ? 'font-semibold text-gray-900' : ''}` }, "Contact"),
+                    React.createElement("button", { onClick: () => setPage('cart'), className: `relative text-gray-600 hover:text-gray-900 transition-colors duration-300 ${page === 'cart' ? 'font-semibold text-gray-900' : ''}` },
+                        React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", fill: "currentColor", className: "w-6 h-6" },
+                            React.createElement("path", { d: "M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.75 3.75 0 003.694 2.46l.004.001h2.24c2.096 0 3.784-1.996 3.864-4.007l.006-.174V9.75a.75.75 0 00-.75-.75h-3.815a.75.75 0 000 1.5h3.19l-.001.036c-.04.887-.604 1.564-1.424 1.564H9.155a3.75 3.75 0 01-3.694-2.46l-2.558-9.592a.75.75 0 00-.362-.278H2.25zM20.25 8.25a.75.75 0 01.75.75v3.75a3.75 3.75 0 01-3.75 3.75H13.5a.75.75 0 01-.75-.75V8.25a.75.75 0 01.75-.75h3.75a3.75 3.75 0 013.75 3.75V12zM15 11.25a.75.75 0 01.75-.75h2.25a.75.75 0 01.75.75V15a.75.75 0 01-.75.75h-2.25a.75.75 0 01-.75-.75v-3.75z" }),
+                            cart.length > 0 && React.createElement("span", { className: "absolute -top-2 -right-2 bg-rose-600 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full" }, cart.length)
+                        )
+                    )
+                  )
+                )
+              ),
+              React.createElement("main", { className: "pt-16 flex-grow" }, content),
+              userId && React.createElement(RecentPurchases, null),
+              React.createElement("footer", { className: "bg-gray-800 text-white py-8" },
+                React.createElement("div", { className: "container mx-auto px-6 text-center" },
+                  React.createElement("p", { className: null }, "© 2025 Gulabikari. All rights reserved.")
+                )
+              )
+            )
+          );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(FirebaseProvider, null, React.createElement(App, null)));
     </script>
 </body>
-
 </html>
